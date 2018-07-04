@@ -1,0 +1,171 @@
+{% extends 'page/base.html' %}
+
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_notice from widgets_notice %}
+{% load get_feature_pages from widgets_page %}
+{% load get_service from widgets_page %}
+{% load get_training from widgets_page %}
+
+{% block title %}:: Real Solutions :: HR Consulting | {{ page.title }}{% endblock %}
+
+{% block content %}
+
+<!--START TOP AREA-->
+<header class="top-area single-page" id="home">
+    <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+    {% include "page/menu.html" %}
+    <div class="welcome-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                        {% if page.is_title %}
+                        <h2>{{ page.title |slice:"30" }}{% if page.title|length > 30 %}...{% endif %}</h2>
+                        <ul class="page-location">
+                            <li>{{ page.excerpt }}
+                            </li>
+                        </ul>
+                        {% else %}
+                        <ul class="page-location">
+                            <li class="location-client">{{ page.excerpt |slice:"60" }}{% if page.excerpt|length > 60 %}...{% endif %}
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+
+<!--SERVICE AREA-->
+<section class="service-area-two section-padding gray-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 pull-right">
+                <div class="service-details-content">
+                    {{ object.content | safe}}
+                </div>
+
+                <a href="{% url 'contact' %}" class="btn common-button">Get in touch</a>
+
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 pull-left">
+                <div class="service-menu">
+                    <h4>Service Details</h4>
+
+                    <ul class = "list-group">
+                            {% recursetree service_pages %}
+                            {% if node.children.exists %}
+                            <li>
+                            <a href="{{ node.url }}" {% if object.title == node.menu %}class="expand list-group-item  active " {% endif %} id="{{ node.slug }}">
+                                {{ node.menu }}
+                            </a>
+
+                            {% for child in node.children.all %}
+                            <a id="service-detail" href="{{ child.url }}" {% if object.title == child.menu %}class="expand list-group-item  active " {% endif %} id="{{ child.slug }}">
+                                {{ child.menu }}
+                            </a>
+                            {% endfor %}
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{ node.url }}" {% if object.title == node.menu %}class="expand list-group-item  active " {% endif %} id="{{ node.slug }}">
+                                {{ node.menu }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% endrecursetree %}
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+
+</section>
+<!--SERVICE AREA END-->
+
+<!-- START: EVENT SECTION BELOW RECRUITEMENT AND SELECTION -->
+{% if a != 1 %}
+<section class="cards-area section-padding gray-bg wow fadeIn" >
+    <div class="container">
+        <div id="interesting-subservice-container">
+            <div class="row">
+                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 pull-right">
+                    <div class="career_nav">
+                        <span class="fa fa-angle-left testi_prev"></span>
+                        <span class="fa fa-angle-right testi_next"></span>
+                    </div>
+                        <div class="all_subservices cards">
+                            {% for pages in sub_services %}
+                                <div class="single-blog wow fadeInUp" data-wow-delay="0.2s">
+                                    <div class="card-image ">
+                                        <figure>
+                                        <img src="{{pages.featured_icon.url}}" class="card-img img-fluid img-thumbnail" alt="{{item.title}}">
+                                        </figure>
+                                    </div>
+                                    <div class="blog-details text-center" id="career-blog">
+
+                                        <h3 class="cards-content" id="card-career">
+                                            <a href="#exampleModal" class="open-modal" data-heading="{{ pages.title }}" data-content="{{ pages.content }}" data-toggle="modal">{{ pages.title }}</a>
+                                        </h3>
+                                        <p id="career-card-title">
+                                            {{ pages.content|safe|truncatewords:6 }}
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</section>
+{% endif %}
+
+
+<!--Subservice modal popup start-->
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if all_clients %}
+{% include 'client/widgets/testimonial.html' %}
+{% endif %}
+
+{% if all_clients %}
+{% include 'client/widgets/client.html' %}
+{% endif %}
+
+<style>
+    .top-area-bg {
+        background: url( {{ page.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+
+</style>
+{% endblock %}
+
+

@@ -1,0 +1,54 @@
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 col-center m-auto testimonial-title">
+			<h2> Testimonials </h2>
+			<div id="myCarousel" class="carousel slide">
+
+				<div class="carousel-inner">
+                {% if all_clients %}
+                    {% for i in all_clients %}
+                        {% if forloop.first %}
+					<div class="item carousel-item active">
+						<div class="img-box"><img src="{{ i.photo.url }}" alt=""></div>
+						<p class="testimonial">{{ i.content }}</p>
+						<p class="overview"><b class="text-uppercase">{{ i.name }}</b>, {{ i.designation }}</p>
+					</div>
+                        {% else %}
+                        <div class="item carousel-item">
+						<div class="img-box"><img src="{{ i.photo.url }}" alt=""></div>
+						<p class="testimonial">{{ i.content }}</p>
+						<p class="overview"><b>{{ i.name }}</b>, {{ i.designation }}</p>
+					</div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                        {% for i in testimonial %}
+                        {% if forloop.first %}
+					<div class="item carousel-item active">
+						<div class="img-box"><img src="{{ i.photo.url }}" alt=""></div>
+						<p class="testimonial">{{ i.content }}</p>
+						<p class="overview"><b class="text-uppercase">{{ i.name }}</b>, {{ i.designation }}</p>
+					</div>
+                        {% else %}
+                        <div class="item carousel-item">
+						<div class="img-box"><img src="{{ i.photo.url }}" alt=""></div>
+						<p class="testimonial">{{ i.content }}</p>
+						<p class="overview"><b>{{ i.name }}</b>, {{ i.designation }}</p>
+					</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+				</div>
+
+				<a class="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</a>
+				<a class="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

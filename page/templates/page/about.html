@@ -1,0 +1,68 @@
+{% extends 'page/base.html' %}
+
+
+{% load mptt_tags %} {% load staticfiles %} {% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %} {% load get_notice from widgets_notice %} {% load get_feature_pages from widgets_page
+%} {% block title %}:: Real Solutions :: HR Consulting | Home{% endblock %} {% block content %}
+
+
+<header class="top-area single-page" id="about-home">
+    <div class="top-area-bg" data-stellar-background-ratio="0.6" id="about-menu"></div>
+    
+    {% include "page/menu.html" %}
+    <div class="welcome-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                            
+                        <h2>{{ about_page.title |slice:"30" }}{% if about_page.title|length > 30 %}...{% endif %}</h2>
+                        <ul class="page-location">
+                            <li>{{ about_page.excerpt|slice:"60" }}{% if about_page.excerpt|length > 60 %}...{% endif %}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+<section class="content">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="col-md-9 box">
+                {% for item in about_sections %}
+                <div class="about{{forloop.counter}}">
+                <p class="title" id="about-title">{{ item.about_title }}</p>
+                <hr class="thick-border">
+                <p>{{item.about_content | safe }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="col-md-3 side_box">
+                {% for item in about_sidebar %}
+                <div class="sidebar" id="about-sidebar">
+                <img src="{{item.sidebar_pic.url}}" alt="image" id="about-sidebar-pic" class="center">
+                <p class="title" id="about-sidebar-para">{{ item.sidebar_title |slice:"25" }}{% if about_page.sidebar_title|length > 25 %}...{% endif %}</p>
+                <p class="sidebar_content">{{item.sidebar_content}}</p>
+                </div>
+                {% endfor %}
+            </div>           
+        </div>
+    </div>
+</section>
+<!--ABOUT DETAILS AREA-->
+
+<!--ABOUT DETAILS AREA END-->
+
+
+<style>
+    .top-area-bg {
+        background: url({{ about_page.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+
+</style>
+
+{% endblock %}

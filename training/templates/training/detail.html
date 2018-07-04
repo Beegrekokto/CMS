@@ -1,0 +1,185 @@
+{% extends 'page/base.html' %}
+
+
+{% load mptt_tags %} {% load staticfiles %} {% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %} {% load get_notice from widgets_notice %} {% load get_feature_pages from widgets_page %} {% load get_service from widgets_page %} {% load get_training from widgets_page %}
+{% block title %}:: Real Solutions ::
+    HR Consulting | {{ main_banner.title }} {% load humanize %} {% endblock %} {% block content %}
+    <!--START TOP AREA-->
+    <header class="top-area single-page" id="home">
+        <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+        {% include "page/menu.html" %}
+        <div class="welcome-area">
+            <div class="area-bg"></div>
+            <div class="container">
+                <div class="row flex-v-center">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="welcome-text text-center">
+                            {% if main_banner.is_title %}
+                                <h2>{{ main_banner.title |slice:"30" }}{% if main_banner.title|length > 30 %}
+                                    ...{% endif %}</h2>
+                                <ul class="page-location">
+                                    <li>{{ main_banner.excerpt |slice:"60" }}{% if main_banner.excerpt|length > 60 %}
+                                        ...{% endif %}</li>
+                                </ul>
+                            {% else %}
+                                <ul class="page-location">
+                                    <li id="training-location">
+                                        {{ main_banner.excerpt |slice:"60" }}{% if main_banner.excerpt|length > 60 %}
+                                            ...{% endif %}</li>
+                                </ul>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--END TOP AREA-->
+
+    <!--SERVICE AREA-->
+    <section class="service-area-two section-padding gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12 pull-right">
+                    <div class="service-details-content">
+
+                        {{ tags | safe }}
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12 pull-left">
+                    <div class="service-menu">
+                        <h4>Service Details</h4>
+                        <ul class="list-group" id="training-list">
+
+                            {% recursetree service_pages %}
+                                {% if node.children.exists %}
+                                <li>
+                                <a href="{{ node.url }}" {% if object.title == node.menu %}class="expand list-group-item  active " {% endif %} id="{{ node.slug }}">
+                                    {{ node.menu }}
+                                </a>
+                                        {% for child in node.children.all %}
+                                            <a id="training-menu" href="{{ child.url }}"
+                                               {% if object.title == child.menu %}class="expand list-group-item  active " {% endif %}
+                                               id="{{ child.slug }}">
+                                                {{ child.menu }}
+                                            </a>
+                                        {% endfor %}
+                                    </li>
+                                {% else %}
+                                <li>
+                                    <a href="{{ node.url }}" {% if object.title == node.menu %}class="expand list-group-item  active " {% endif %} id="{{ node.slug }}">
+                                    {{ node.menu }}
+                                    </a>
+                                </li>
+                                {% endif %}
+
+                            {% endrecursetree %}
+
+                        </ul>
+                    </div>
+                  </nav>
+                  {% if events %}
+                    <div id="#event{{ event.id }}" class="event-collapse{{ event.id }} collapse ">
+                        <div class="well">
+                            <div class="w3-container w3-teal">
+                                <h3 id="training-event"><strong> {{ event.event_on.title }} / {{ event.title }} </strong></h3>
+                                <br>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><strong>Title : </strong> {{ event.title }}</li>
+                                        <li class="list-group-item"><strong>Start Date : </strong> {{ event.start }} <span class="text-primary">( {{ event.start|naturaltime }} )</span></li>
+                                        <li class="list-group-item"><strong>End Date : </strong> {{ event.end }} <span class="text-primary">( {{ event.end|naturaltime }} )</span> </li>
+                                        <li class="list-group-item"><strong>Detail : </strong> {{ event.detail }} <a class="pull-right" type="button" href="{{ event.event_on.url }}" >Read More..</a>  </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                            <!-- ROW 1 -->
+                            {% for event in events %}
+                                <!-- ROW 2 -->
+                                <nav class="navbar navbar-default" role="navigation">
+                                    <div
+                                         class="collapse navbar-collapse training-navigation"
+                                         id="bs-example-navbar-collapse-{{ forloop.counter }}">
+                                        <ul class="nav navbar-nav event-table-nav">
+                                            <li class="one event-table-list"><a>{{ event.title }}</a></li>
+                                            <li class="two event-table-list"><a>{{ event.start }}</a></li>
+                                            <li class="event-table-list">
+                                                <a class="col-md-6"
+                                                   onclick="collapshow('{{ event.id }}'); return false;" href="#">
+                                                    <strong id="training-event-detail"> View Details </strong> </a>
+                                                <a onclick="function test(){ $('#email_title').val('{{ event.title }}') } test(); return false;"
+                                                   data-toggle="modal" href="#myModal"
+                                                   class="col-md-6"><strong id="training-event-interested"> Interested In </strong>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
+                                <div id="#event{{ event.id }}" class="event-collapse{{ event.id }} collapse ">
+                                    <div class="well">
+                                        <div class="w3-container w3-teal">
+                                            <h3 id="training-event-head">
+                                                <strong> {{ event.event_on.title }} / {{ event.title }} </strong></h3>
+                                            <br>
+                                            <ul class="list-group">
+                                                <li class="list-group-item"><strong>Title : </strong> {{ event.title }}</li>
+                                                <li class="list-group-item"><strong>Start Date : </strong> {{ event.start }} <span class="text-primary">( {{ event.start|naturaltime }} )</span></li>
+                                                <li class="list-group-item"><strong>End Date : </strong> {{ event.end }} <span class="text-primary">( {{ event.end|naturaltime }} )</span> </li>
+                                                <li class="list-group-item"><strong>Detail : </strong> {{ event.detail }}
+                                                    <a href="{{ event.event_on__url }}" class=" btn btn-success btn-sm pull-right" id="training-event-read">Read More..</a>
+                                                </li>
+                                            </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                          <!-- ROW 3 -->              
+                        </div>
+                    </div>
+                    {% endif %}
+                        <div class="modal fade bd-example-modal-lg" id="calendarModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-body">
+                            {% include "training/calendar.html" %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <b id="training-send-mail">Send Mail</b>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                            </div>
+                            <div class="modal-body">
+                                <form action="" id="trainingcontact-form" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ form.as_p }}
+                                    </div>
+                                    <button type="submit" class="btn btn-default btn-success btn-block"
+                                            onclick="validation_error(event)">Send
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    </section>
+
+    <!--SERVICE AREA END-->
+
+<!-- Testimonial start -->
+    {% if testimonial %}
+        {% include 'client/widgets/testimonial.html' %}
+    {% endif %}
+<!-- Testimonial End -->
+
+{% endblock %}

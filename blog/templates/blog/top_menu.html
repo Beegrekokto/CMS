@@ -1,0 +1,23 @@
+<!--START TOP AREA-->
+<header class="top-area single-page" id="home">
+    <div class="top-area-bg"    data-stellar-background-ratio="0.6"></div>
+    {% include "page/menu.html" %}
+    <div class="blog-welcom-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                        <h2 id="blog-top">{{ blog_page_title.name|slice:"30" }}{% if blog_page_title.name|length > 30 %}...{% endif %}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+<style>
+    .top-area-bg {
+        background: rgba(0, 0, 0, 0) url({{blog_page_title.main_image.url}}) no-repeat scroll center center / cover;
+    }
+</style>

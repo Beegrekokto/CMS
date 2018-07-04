@@ -1,0 +1,68 @@
+<div class="card row well side-box">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs float-left" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="first" data-toggle="tab" href="" data-target="#most_popular" role="tab">
+                    <strong>Most Popular</strong>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="tab-content">
+            <div class="tab-pane active" id="most_popular" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for post in popular_posts_qs %}
+                            <div class="row my-1">
+                                <div class="col-md-4">
+                                    <a href="{% url 'blog:post_detail' post.slug %}#blog-header">
+                                        <figure>
+                                            <img class="border-1 p-1 img-responsive img-fluid img-thumbnail" src="{{ post.header_img.url }}" alt="{{post.title  }}"/>
+                                        </figure>
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div>
+                                        <a href="{% url 'blog:post_detail' post.slug %}#blog-header">
+                                            <strong>{{ post.title|truncatechars:"20" }}</strong>
+                                        </a>
+                                    </div>
+                                    <i class="text-muted">Total Views: {{ post.count }}</i>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="alert alert-info m-0">
+                                <span class="icon-circle-info"></span> No Data Found!
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card row well side-box my-3">
+    <div class="card-header">
+        <strong>Categories</strong>
+    </div>
+    <div class="list-group">
+        {% for categ in blog_category_qs %}
+            <span class="border-bottom-1">
+                <a href="{% url 'blog:category_detail' categ.slug %}#blog-top" class="list-group-item justify-content-between border-0 {% if blog_categ == categ %}active{% endif %}">
+                    {{ categ }}
+                    {#<span class="font-xs">({{ categ.get_post_count }})</span>#}
+                </a>
+            </span>
+        {% empty %}
+        <div class="card">
+            <div class="card-block">
+                <div class="alert alert-info m-0">
+                    <span class="icon-circle-info mr-2"></span>No Data Found!
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

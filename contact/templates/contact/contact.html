@@ -1,0 +1,144 @@
+{% extends 'page/base.html' %}
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_notice from widgets_notice %}
+{% load get_feature_pages from widgets_page %}
+
+{% block content %}
+<!--START TOP AREA-->
+<header class="top-area single-page" id="home">
+    <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+    {% include "page/menu.html" %}
+    <div class="welcome-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                        {% if contact_section.is_title %}
+                            <h2>{{ contact_section.title |slice:"30" }}{% if contact_section.title|length > 30 %}...{% endif %}</h2>
+                            <ul class="page-location">
+                                <li>{{ contact_section.excerpt |slice:"60" }}{% if contact_section.excerpt|length > 60 %}...{% endif %}</li>
+                            </ul>
+                        {% else %}
+                        <ul class="page-location">
+                            <li class="location-client">{{ contact_section.excerpt |slice:"60" }}{% if contact_section.excerpt|length > 60 %}...{% endif %}</li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+
+<!--CONTACT US AREA-->
+<section class="contact-area" id="contact">
+    <div class="contact-form-area section-padding gray-bg">
+        <div class="container">
+            {% comment %}
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="area-title text-center">
+                        <h3 class="contact-heading">GET IN TOUCH</h3>
+                        <p>Need any help just send a message via our email address</p>
+                    </div>
+                </div>
+            </div>
+            {% endcomment %}
+
+            <div class="row col-md-9">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="contact-form">
+                        <form action="{% url 'contact' %}" id="contact-form" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            {{ form.name }}
+                                        </div>
+                                    </div>
+                                    {{ form.name.errors }}
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            {{ form.email }}
+                                        </div>
+                                    </div>
+                                    {{ form.email.errors }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            {{ form.company_name }}
+                                        </div>
+                                    </div>
+                                    {{ form.company_name.errors }}
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            {{ form.contact_num }}
+                                        </div>
+                                    </div>
+                                    {{ form.contact_num.errors }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="form-group" id="{{ form.message.id_for_label }}">
+                                        <div class="form-input">
+                                            {{ form.message }}
+                                        </div>
+                                    </div>
+                                    {{ form.message.errors }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <button type="submit" onclick="validation_error(event)">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-3">
+                <div class="single-footer-widget footer-about">
+                    <h3 class="contact-heading text-left">Contact Us</h3>
+                    <ul>
+                        <li><i class="fa fa-phone"></i> <strong> {{ company_info.phone }} </strong></li>
+                        <li><i class="fa fa-map-marker"></i> <a href="mailto:{{ company_info.email }}"> <strong> {{ company_info.email }}</strong></a></li>
+                        <li><i class="fa fa-phone"></i><strong> {{ company_info.address }} </strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="map-area relative">
+        <div id="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.993074310784!2d85.3396376501704!3d27.68660893292641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1993b3b115f1%3A0x8c29359972012a2b!2sReal+Solutions+Private+Limited!5e0!3m2!1sen!2snp!4v1528718220424"
+                    width="100%" height="350px;" frameborder="0" id="map-contact" allowfullscreen></iframe>
+            </iframe>
+        </div>
+    </div>
+</section>
+<!--CONTACT US AREA END-->
+
+<style>
+.top-area-bg {
+        background: url( {{ contact_section.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+</style>
+{% endblock %}

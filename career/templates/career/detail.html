@@ -1,0 +1,286 @@
+{% extends 'page/base.html' %}
+
+{% load mptt_tags %} {% load staticfiles %} {% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %} {% load get_feature_pages from widgets_page %} {% load get_service from widgets_page%}
+{% load slice_string from  widgets_page %}
+{% block content %}
+
+<!--START TOP AREA-->
+<header class="top-area single-page" id="home">
+    <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+    {% include "page/menu.html" %}
+    <div class="welcome-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                        {% if career_section.is_title %}
+                            <h2 class="text-uppercase">{{ career_section.title|slice:"30" }}{% if career_section.title|length > 30 %}...{% endif %}</h2>
+                            <ul class="page-location">
+                                <li>
+                                    {{ career_section.excerpt |slice:"60" }}{% if career_section.excerpt|length > 60 %}...{% endif %}
+                                </li>
+                            </ul>
+                        {% else %}
+                            <ul class="page-location">
+                                <li class="location-client">
+                                    {{ career_section.excerpt |slice:"60" }}{% if career_section.excerpt|length > 60 %}...{% endif %}
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+
+<!--CAREER DETAILS AREA-->
+<nav class="navbar navbar-default">
+    <div class="container ">
+        <div class="navbar-header">
+            <b>Career Opportunity at Real Solutions</b>
+        </div>
+        <ul id="career-nav-list" class="nav navbar-nav navbar-right">
+            <li class="active nav-item">
+                <a href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="#card">Interesting At RS</a>
+            </li>
+            <li class="nav-item">
+                <a href="#career-cv-section">Apply for job</a>
+            </li>
+            <li class="nav-item">
+                <a href="#map">See Location</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="cards-area section-padding gray-bg wow fadeIn" id="career-card">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-lg-8 col-md-offset-3 col-lg-offset-2 col-sm-12 col-xs-12">
+                <div class="area-title text-center wow fadeIn">
+                    <h2 id="interesting-heading" class="text-center text-uppercase">
+                        {{ titles.interesting_at_rs_title }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div id="interesting-cards-container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="career_nav">
+                        <span class="fa fa-angle-left testi_prev"></span>
+                        <span class="fa fa-angle-right testi_next"></span>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="all_blogs cards" id="card">
+                            {% for item in cards %}
+                                <div class="single-blog wow fadeInUp" data-wow-delay="0.2s">
+                                    <div class="card-image ">
+                                        <a onclick="collapfunc('#show_detail_for_{{item.id}}')" role="button">
+                                            <figure>
+                                                <img src="{{item.card_image.url}}" class="card-img img-fluid img-thumbnail" alt="{{item.title}}">
+                                            </figure>
+                                        </a>
+                                    </div>
+                                    <div class="blog-details text-center" id="career-blog">
+                                        <h3 class="cards-content" id="card-career">{{ item.title |slice:"40" }}{% if item.title|length > 40 %}...{% endif %}</h3>
+                                        <p id="career-card-title">
+                                            {{ item.title_content | slice_string | truncatechars:85 }}
+                                        </p>
+                                        <a onclick="collapfunc('#show_detail_for_{{item.id}}')" role="button" class="read-more">
+                                            Read More
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Detail Collapse section-->
+        {% for item in cards %}
+            <div>
+                <div class="card-collapse row collapse " id="show_detail_for_{{item.id}}">
+                    <div class="col-md-12">
+                        <div>
+                            <article class="row">
+                                <div class=" col-md-5 col-12">
+                                    <img src="{{item.card_image.url}}" alt="{{item.title}}" class="detail-image img-fluid img-thumbnail" id="career-article"/>
+                                </div>
+                                <div class="col-md-7 col-12">
+                                    <header>
+                                        <h2 class="detail-heading">{{item.title}}</h2>
+                                    </header>
+                                    <div class="card-detail">
+                                        {{item.detail_content|safe|truncatechars:700}}
+                                        <button onclick="collaphide('#show_detail_for_{{item.id}}')" class="btn btn-success">
+                                            Back
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <!-- Detail Section End-->
+    </div>
+</section>
+<section id="career-job-opening">
+    <div class="container text-center">
+        <div>
+            <div id="career-card-content">
+                <p>{{ career_section.content|safe }}</p>
+                <br>
+                <a href="#career-cv-drop" id="cards-heading" class="btn common-button">
+                    Current Job Openings
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Interesting at Real Solution Section end-->
+
+
+<!--vacancy section begin-->
+<section id="vacancy">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 col-sm-12 col-xs-12">
+                <div class="area-title text-center wow fadeIn">
+                    <h2 id="career-vacancy-head" class="text-uppercase">{{ titles.position_title }}</h2>
+                </div>
+            </div>
+        </div>
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th>Positions</th>
+                    <th>No. of Vacancies</th>
+                    <th>Application Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in vacancies %}
+                    <tr>
+                        <td><a href="{{item.link}}" target="_blank">{{item.position}}</a></td>
+                        <td>{{item.number}}</td>
+                        <td>{{item.deadline}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+<!--vacancy section ending-->
+
+<!--drop resume section-->
+<section id="career-cv-drop">
+    <div class="container text-center">
+        <div>
+            <div id="career-cv-section">
+                <h3>{{ cv_drop.section_title }}</h3>
+                <p id="career-cv-para">{{ cv_drop.section_body }}</p>
+                <a class="btn common-button" data-toggle="modal" data-target="#fileUploadModal" id="career-file-upload" role="button">
+                    {{ cv_drop.button_name }}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--end of drop resume section-->
+
+<!--Map section Begin-->
+<section>
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 col-sm-12 col-xs-12">
+            <div class="area-title text-center wow fadeIn">
+                <h2 class="text-center text-uppercase" id="career-map-title">
+                    {{ titles.map_title }}
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="map-area relative">
+        <div id="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.993074310784!2d85.3396376501704!3d27.68660893292641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1993b3b115f1%3A0x8c29359972012a2b!2sReal+Solutions+Private+Limited!5e0!3m2!1sen!2snp!4v1528718220424" width="100%" height="350px;" frameborder="0" id="career-map" allowfullscreen></iframe>
+        </div>
+    </div>
+</section>
+<!--Map section End-->
+
+<!--Form Modal Begin-->
+<div class="modal fade" id="fileUploadModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Please fill up the form and drop your Resume</h4>
+                </div>
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="fname">FullName*:</label>
+                        <div class="col-sm-9">
+                            {{form.name}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="email">Email ID*:</label>
+                        <div class="col-sm-9">
+                            {{form.email}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="phone">Mobile No*:</label>
+                        <div class="col-sm-9">
+                            {{form.phone}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="job">Job Category*:</label>
+                        <div class="col-sm-9">
+                            {{form.job_category}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="resume">Resume*:</label>
+                        {{form.resume}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--form modal end-->
+
+
+<!--CAREER DETAILS AREA END-->
+
+<style>
+    .top-area-bg {
+        background: url({{ career_section.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+
+</style>
+{% endblock %}

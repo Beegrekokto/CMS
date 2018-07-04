@@ -1,0 +1,74 @@
+{% extends 'page/base.html' %}
+
+
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_notice from widgets_notice %}
+{% load get_feature_pages from widgets_page %}
+
+{% block title %}:: Real Solutions :: HR Consulting | Home{% endblock %}
+
+{% block content %}
+
+    <!--START TOP AREA-->
+    <header class="top-area" id="home">
+        <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+        {% include "page/menu.html" %}
+        <!--HOME SLIDER AREA-->
+        <div class="welcome-slider-area">
+            <div class="welcome-single-slide slider-bg-one">
+                <div class="container">
+                        
+                    <div class="row flex-v-center">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="welcome-text text-center">
+                                <h1>{{ main_banner.title }}</h1>
+                                <p>{{ main_banner.excerpt }}</p>
+                                <div class="home-button">
+                                    {% for item in main_banner.buttons.all %}
+
+                                        <a href="{{ item.dest_url }}"> {{ item.name }}</a>
+                                    {% endfor %}
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        <!--END HOME SLIDER AREA-->
+    </header>
+    <!--END TOP AREA-->
+
+    <!--BLOG AREA-->
+    {% get_feature_pages %}
+    <!--BLOG AREA END-->
+
+    
+
+   
+    <!--TESTMONIAL AREA -->
+	{% get_testimonial %}
+    <!--TESTMONIAL AREA END -->
+
+
+	<!--CLIENTS AREA-->
+	{% get_client %}
+    <!--CLIENTS AREA END-->	
+
+     <!--PROMO AREA-->
+     
+    <!--PROMO AREA END-->
+
+    <style>
+		.slider-bg-one {
+			background: url( {{ main_banner.featured_pic.url }} ) no-repeat scroll center center / cover;
+		}
+	</style>
+{% endblock %}

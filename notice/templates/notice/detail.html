@@ -1,0 +1,95 @@
+{% extends 'page/base.html' %}
+
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_notice from widgets_notice %}
+{% load get_feature_pages from widgets_page %}
+{% load get_service from widgets_page %}
+
+
+{% block content %}
+
+    <!--START TOP AREA-->
+    <header class="top-area single-page" id="home">
+        <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+        {% include "page/menu.html" %}
+        <div class="welcome-area">
+            <div class="area-bg"></div>
+            <div class="container">
+                <div class="row flex-v-center">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="welcome-text text-center">
+                            <!-- <h2>{{ notice_section.title | truncatechars:5}}</h2> -->
+                            {% if notice_section.is_title %}
+                        <h2>{{ notice_section.title |slice:"30" }}{% if notice_section.title|length > 30 %}...{% endif %}</h2>
+                        <ul class="page-location">
+                            <li>{{ notice_section.excerpt |slice:"60" }}{% if notice_section.excerpt|length > 60 %}...{% endif %}</li>
+                        </ul>
+                        {% else %}
+                        <ul class="page-location">
+                            <li class="location-client">{{ notice_section.excerpt |slice:"60" }}{% if notice_section.excerpt|length > 60 %}...{% endif %}</li>
+                        </ul>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--END TOP AREA-->
+
+    <!--ABOUT DETAILS AREA-->
+    <section class="about-details-area section-padding wow fadeIn">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div id="history" class="company-history fade in active">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                    <div class="about-history-content history-list">
+                                        {% for item in notice %}
+                                            <div class="single-history">
+                                                <div class="history-year">
+                                                    <div id="notice-date">
+                                                    <p>{{ item.publish }}</p>
+                                                    </div>
+                                                </div>
+                                                <h4>{{ item.title }}</h4>
+                                                <p id="small_text_{{ item.id }}">{{item.content | safe | truncatewords:20}}</p>
+                                                <p>
+                                                     <a class="btn notice-read-button" id="readmore_button_{{item.id}}" data-id = "{{ item.id }}" data-toggle="collapse" href="#collapseContent_{{item.id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                         Readmore
+                                                     </a>
+                                                </p>
+                                                <div class="collapse" id="collapseContent_{{item.id}}"> {{ item.content | safe }} <p>Back</p> </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--ABOUT DETAILS AREA END-->
+
+
+<style>
+    .top-area-bg {
+        background: url( {{ notice_section.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+</style>
+
+<script>
+    $(document).on("click", ".notice-read-button", function(){
+       var id = $(this).data('id');
+       $('#small_text_'+id).remove();
+    });
+</script>
+
+{% endblock %}

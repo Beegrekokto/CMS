@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card-header">
+        <h1 class="mb-0 h6"><strong>Recent Job Kurakani</strong></h1>
+    </div>
+    <div class="card-block">
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="media pb-2">
+                <a href="{% url 'blog:jobkurakani:post_detail' blog.slug %}">
+                    <figure>
+                        <img class="d-flex mx-2 border-1" src="{{ blog.header_img.url }}" alt="{{ blog.title }}"
+                             width="64"
+                             height="64">
+                    </figure>
+                </a>
+                <div class="media-body">
+                    <a href="{% url 'blog:jobkurakani:post_detail' blog.slug %}">
+                        <h1 class="font-md-xxs m-0">
+                            {{ blog.title|truncatechars:"60" }}
+                        </h1>
+                    </a>
+                    <i class="text-muted font-sm">Total Views: {{ blog.count }}</i>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card-footer p-2 m-0">
+        <div class="float-right">
+            <a href="{% url 'blog:jobkurakani:index' %}" class="font-sm">
+                <span class="icon-preview mr-2"></span> View All
+            </a>
+        </div>
+    </div>
+</div>

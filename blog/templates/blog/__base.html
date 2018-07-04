@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title>{% block whole_title %}{% block title %}{% endblock title %} | merojob{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="{% block meta_description %}Find most recent jobs in Nepal at merojob.com. We are an online job search site in Nepal where you can find career opportunities suitable for everyone.{% endblock %}"/>
+    <meta name="keywords" content="{% block meta_keyword %} merojob.com, jobs in Nepal, jobsite in Nepal, job vacancies in Nepal, job vacancy in Nepal, job site in Nepal recent job vacancies in Nepal, job opportunities in Nepal, job sites in Nepal, find jobs in Nepal, find jobs in Nepal, job search in Nepal, job search.{% endblock meta_keyword %}"/>
+    <meta name="author" content="{% block seo_meta_author %}merojob{% endblock seo_meta_author %}"/>
+    <meta name="google-site-verification" content="KVzb1w4KL9v9xYDmCb-NYo9d0jRnm4e4cirTwVM9lfY"/>
+    {% block extra_meta %}
+    <meta property='og:title' content='{% block og_title %}{{ seo_page_title|truncatechars:"60" }}{% endblock og_title %}'/>
+    <meta property='og:image' content='{% block og_image %}{% static ' images/logo/logo-og-image.jpg' %}{% endblock og_image %}'/>
+    <meta property='og:description' content='{% block og_description %}{{ seo_meta_description|truncatechars:"155" }}{% endblock og_description %}'/>
+    <meta property='og:url' content='{% block og_url %}https://merojob.com/{% endblock og_url %}'/>
+    <meta property='og:type' content='{% block og_type %}website{% endblock og_type %}'/>
+    <meta name="theme-color" content="#002A5B">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    {% endblock extra_meta %}
+
+    <link href="{% static 'css/base_blog.css' %}" rel="stylesheet">
+
+    {% block json_ld %}{% endblock %}
+    {% block css %} {% endblock %}
+
+</head>
+<body>
+
+{% block css1 %}{% endblock css1 %}
+{% block content %}{% endblock content %}
+{% block footer %}{% endblock footer %}
+{% block javascript %}{% endblock %}
+
+</body>
+</html>

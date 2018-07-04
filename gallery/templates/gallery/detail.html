@@ -1,0 +1,123 @@
+{% extends 'page/base.html' %}
+
+{% load mptt_tags %} {% load staticfiles %}
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_feature_pages from widgets_page %} {% load get_service from widgets_page%}
+
+{% block content %}
+<!--START TOP AREA-->
+<header class="top-area single-page" id="home">
+    <div class="top-area-bg" data-stellar-background-ratio="0.6"></div>
+    {% include "page/menu.html" %}
+    <div class="welcome-area">
+        <div class="area-bg"></div>
+        <div class="container">
+            <div class="row flex-v-center">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="welcome-text text-center">
+                        {% if gallery_section.is_title %}
+                            <h2>{{ gallery_section.title |slice:"30" }}{% if gallery_section.title|length > 30 %}...{% endif %}</h2>
+                            <ul class="page-location">
+                                <li>
+                                    {{ gallery_section.excerpt |slice:"60" }}{% if gallery_section.excerpt|length > 60 %}...{% endif %}
+                                </li>
+                            </ul>
+                        {% else %}
+                            <ul class="page-location">
+                                <li cla>
+                                    {{ gallery_section.excerpt |slice:"60" }}{% if gallery_section.excerpt|length > 60 %}...{% endif %}
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--END TOP AREA-->
+
+<!--Gallery section begin-->
+<section class="about-details-area section-padding wow fadeIn" id="gallery-sec">
+    <div class="container">
+        <div class="row">
+            {% for item in gallery %}
+                <div class="col-md-12">
+                    <div class="gallery_nav_{{ forloop.counter }}">
+                        <span class="fa fa-angle-left testi_prev"></span>
+                        <span class="fa fa-angle-right testi_next"></span>
+                    </div>
+                    <h3>{{ item.title |slice:"30" }}{% if item.title|length > 30 %}...{% endif %}</h3>
+                    <div class="gallery_photo_{{ forloop.counter }}">
+                        {% for photo in item.get_active_photos %}
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="thumbnail">
+                                    <a href="{{photo.image.url}}" data-toggle="lightbox" data-title="{{item.title}}" data-gallery="{{item.title}}" data-footer="Caption:{{photo.title}}">
+                                        <figure>
+                                            <img src="{{photo.image.url}}" alt="{{photo.title}}" class="img-fluid" id="pic-gallery">
+                                        </figure>
+                                        <div class="caption">
+                                            <p>{{ photo.title |slice:"38" }}{% if photo.title|length > 38 %}...{% endif %}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div align="center">
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li>
+                            <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="disabled">
+                            <a>
+                                <span>&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active">
+                                <a>
+                                    <span>{{ i }}
+                                        <span class="sr-only">(current)</span>
+                                    </span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li>
+                            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <a>
+                            <li class="disabled">
+                                <span>&raquo;</span>
+                            </li>
+                        </a>
+                    {% endif %}
+            </ul>
+        {% endif %}
+        </div>
+</section>
+<!--Gallery section end-->
+
+<style>
+    .top-area-bg {
+        background: url({{ gallery_section.featured_pic.url }} ) no-repeat scroll center center / cover;
+    }
+
+</style>
+{% endblock %}

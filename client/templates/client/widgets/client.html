@@ -1,0 +1,47 @@
+<section class="clients-area section-padding gray-bg wow fadeIn">
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 col-sm-12 col-xs-12">
+                    <div class="area-title text-center wow fadeIn">
+                        <h2>Clients</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="client_nav_1">
+                    <span class="fa fa-angle-left testi_prev"></span>
+                    <span class="fa fa-angle-right testi_next"></span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="client-list">
+                {% if all_clients %}
+                    {% for item in all_clients %}
+                        <div class="single-client">
+                            <a href="{{ item.url }}" target="_blank">
+                                <figure id="pic-client">
+                                    <img src="{{ item.logo.url }}" alt="">
+                                </figure>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% for item in client %}
+                            <div class="single-client">
+                                <a href="{{ item.url }}" target="_blank">
+                                    <figure id="pic-client">
+                                        <img src="{{ item.logo.url }}" alt="">
+                                    </figure>
+                                </a>
+                            </div>
+                        {% endfor %}
+                {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

@@ -1,0 +1,153 @@
+{% extends 'page/base.html' %}
+
+{% load mptt_tags %} {% load staticfiles %}
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_feature_pages from widgets_page %} {% load get_service from widgets_page%}
+
+{% load staticfiles %}
+{% load get_posts_by_category from blog_tags %}
+{% block title %}HR Insider{% endblock title %}
+{% block meta_keyword %}job kurakani, blogs, career tips, career blogs, interview tips, interview questions, resume
+writing, career development, training and education, career blog, career advice, HR Tips, Training{% endblock %}
+{% block meta_description %}Find useful guidelines for job search, job interviews, career development, human resource
+management, etc. at Job Kurakani by merojob.com{% endblock %}
+
+{% block extra_meta %}
+<meta property='og:title' content='Career Blogs by merojob | A Complete Guide to Your Career | Job Kurakani'/>
+<meta property='og:image' content="{% static '/images/career/jobkurakani/jk2-logo.png' %}"/>
+<meta property='og:description' content='Find useful guidelines for job search, job interviews, career development, human resource management, etc. at Job Kurakani by merojob.com'/>
+<meta property='og:url' content='https://merojob.com/jobkurakani/'/>
+<meta property="fb:pages" content="98469913679"/>
+{% endblock extra_meta %}
+
+{% block styling %}
+    <link href="{% static 'css/blog.css'%}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+{% include 'blog/top_menu.html' %}
+{% include 'blog/blog_header.html' %}
+
+<section class="blog-section">
+
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-md-8">
+                {% for featured in object_list %}
+                    {% if forloop.first %}
+                        <div class="card row well" id="blog-card" itemscope itemtype="http://schema.org/BlogPosting">
+                            <div class="card-body">
+                                <meta itemprop="name" content="{{ featured.title }}"/>
+                                <meta itemprop="datePublished" content="{{ featured.created_at }}">
+                                <meta itemprop="author" content="merojob">
+                                <div itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                                    <a href="{% url 'blog:post_detail' featured.slug %}#blog-header">
+                                        <figure>
+                                            <img class="mr-0 p-1 border-1 img-thumbnail" src="{{ featured.header_img.url }}" alt="{{ featured.title }}" itemprop="url"/>
+                                        </figure>
+                                    </a>
+                                    <meta itemprop="width" content="610">
+                                    <meta itemprop="height" content="300">
+
+                                </div>
+                                <h4 class="my-3">
+                                    <a href="{% url 'blog:post_detail' featured.slug %}#blog-header" itemprop="headline">
+                                        <strong>{{ featured.title }}</strong>
+                                    </a>
+                                </h4>
+                                <p class="text-muted" itemprop="description">{{ featured.excerpt }}</p>
+
+                            </div>
+                            <hr>
+                            <div class="card-footer">
+                                Total Views: {{ featured.count }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% if blog_category_qs %}
+                    {% for categ in blog_category_qs %}
+                        <div class="card row well {% if not forloop.first %}my-3{% else %}mt-3{% endif %}">
+                            <div class="card-header">
+                                <strong>{{ categ }}</strong>
+                            </div>
+                        <hr>
+                            <div class="card-block">
+                                {% get_posts_by_category categ check_deadline=True as posts %}
+                                <div class="row">
+                                    {% for post in posts %}
+                                        {% if forloop.first or forloop.counter == 2 %}
+                                            <div class="col-md-6">
+                                                <div class="text-center">
+                                                    <a href="{% url 'blog:post_detail' post.slug %}#blog-header">
+                                                        <figure class="categ-img">
+                                                            <img class="mr-0 p-1 border-1 img-responsive img-fluid img-thumbnail" src="{{ post.header_img.url }}" alt="{{ post.title }}"/>
+                                                        </figure>
+                                                    </a>
+                                                </div>
+                                                <a href="{% url 'blog:post_detail' post.slug %}#blog-header">
+                                                    <h4 class="my-3">{{ post.title }}</h4>
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-md-6">
+                                                <div class="card-group mb-3">
+                                                    <div class="card">
+                                                        <div class="card-block p-2">
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <a href="#">
+                                                                        <figure>
+                                                                            <img class="border-1 p-1 img-responsive img-fluid img-thumbnail"
+                                                                                 src="{{ post.header_img.url }}"
+                                                                                 alt="{{ post.title }}"/>
+                                                                        </figure>%
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-md-8">
+                                                                    <h6>
+                                                                        <a href="{% url 'blog:post_detail' post.slug %}"><strong>{{ post.title }}</strong></a>
+                                                                    </h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% empty %}
+                                        <div class="col-md-12">
+                                            <div class="alert alert-info">
+                                                <span class="icon-circle-info"></span> No posts found under
+                                                <strong>{{ categ }}</strong>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <div class="alert alert-info m-0">
+                                <span class="icon-circle-info"></span> No posts found!
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- / Main Content -->
+            <!-- Sidebar Content  -->
+            <div class=" col-md-4 mt-3 pl-md-0">
+                {% include 'blog/sidebar_content.html' %}
+            </div>
+            <!-- / Sidebar Content  -->
+        </div>
+    </div>
+</section>
+{% endblock content %}

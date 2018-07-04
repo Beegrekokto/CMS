@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<section class="blog-area section-padding gray-bg wow fadeIn">
+        <div class="container">
+                <div class="row">
+                        <div class="col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 col-sm-12 col-xs-12">
+                            <div class="area-title text-center wow fadeIn">
+                                <h2>Services</h2>
+                            </div>
+                        </div>
+                    </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="services_nav">
+                        <span class="fa fa-angle-left testi_prev"></span>
+                        <span class="fa fa-angle-right testi_next"></span>
+                    </div>
+                
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="all_blog">
+                        {% for item in feature_pages %}
+                            <div class="single-blog wow fadeInUp" data-wow-delay="0.2s">
+                                <div class="blog-image ">
+                                    <figure>
+                                        <img src="{{ item.featured_icon.url }}" alt="">
+                                    </figure>
+                                </div>
+                                <div class="blog-details text-center" id="feature-blog">
+                                    <h3><a href="{% url 'page-detail' slug=item.slug %}">{{ item.title |slice:"30" }}{% if item.title|length > 30 %}...{% endif %}</a></h3>
+                                    <p>{{ item.content | safe | truncatewords:20 }} <a href="{{item.url}}" id="feature-read">Read More</a> </p>
+                                    {% for i in item.buttons.all %}
+                                     <a class="btn common-button" href="{{ i.dest_url }}" role="button" id="feature-button">{{ i.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>

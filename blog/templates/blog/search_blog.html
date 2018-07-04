@@ -1,0 +1,125 @@
+{% extends 'blog/base_blog.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Search Page | Job Kurakani{% endblock title %}
+{% block meta_description %}Searh Result of Job Kurakani{% endblock meta_description %}
+
+{% block extra_meta %}
+    <meta property='og:title' content='Career Blogs by merojob | A Complete Guide to Your Career | Job Kurakani | Search Results'/>
+    <meta property='og:image' content='{% static '/images/career/jobkurakani/jk2-logo.png' %}'/>
+    <meta property='og:description' content='Find useful guidelines for job search, job interviews, career development, human resource management, etc. at Job Kurakani by merojob.com'/>
+    <meta property='og:url' content='https://www.merojob.com{{ request.path }}?search='/>
+    <meta property="fb:pages" content="98469913679" />
+{% endblock extra_meta %}
+
+{% block content %}
+    {% include 'blog/top_menu.html' %}
+    {% include 'blog/blog_header.html' %}
+    <section class = "blog-section">
+        <div class="container my-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <h4  id="search-card-head">Search Results</h4>
+                        </div>
+                    </div>
+                    {% for post in blog_posts %}
+                        <div class="card well {% if not forloop.first %}my-3{% else %}mt-3{% endif %}" itemscope itemtype="http://schema.org/BlogPosting">
+                            <meta itemprop="name" content="{{ post.title }}"/>
+                            <meta itemprop="datePublished" content="{{ post.created_at }}">
+                            <meta itemprop="author" content="merojob">
+                            <div class="card-block">
+                                <div class="row ">
+                                    <div class="col-md-3" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                                        <a href="{% url 'blog:post_detail' post.slug %}#blog-header">
+                                            <figure>
+                                                <img class="border-1 p-1 img-responsive img-fluid img-thumbnail" src="{{ post.header_img.url }}" alt="{{ post.title }}" itemprop="url"/>
+                                            </figure>
+                                        </a>
+                                        <meta itemprop="width" content="610">
+                                        <meta itemprop="height" content="300">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h2 class="h6"><a href="#" itemprop="headline">{{ post.title }}</a></h2>
+                                        <p class="text-muted mb-1" itemprop="description">
+                                            {{ post.excerpt|safe|truncatechars:"200" }}
+                                            <a href="{% url 'blog:post_detail' post.slug %}" class="" itemprop="url">Read more</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="dropdown dropdown-arrow d-inline">
+                                    <a href="" class="{% if disabled %} disabled {% endif %}" data-toggle="dropdown">
+                                        <span class="icon-share mr-1"></span>Share
+                                    </a>
+                                    {% with post_link=request.get_host|add:post.get_absolute_url %}
+                                        <div class="dropdown-menu dropdown-menu-left" data-post.title='{{ post.title }}' data-post_link='{{ post_link }}'>
+                                            <div class="row ml-2">
+                                                <div class="col-md-2 text-center">
+                                                    <a class="fb-xfbml-parse-ignore social-share" href="{{ social_share.facebook }}">
+                                                        <span class="icon-facebook"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <a class="social-share" href="{{ social_share.twitter }}">
+                                                        <span class="icon-twitter"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endwith %}
+                                </div>
+                                <div class="float-right">
+                                    <span class="icon-time"></span> Posted at: {{ post.created_at|timesince }} ago |
+                                    <span class="icon-preview "></span> Total Views: {{ post.count }}
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="alert alert-info">
+                                    <span class="icon-circle-info mr-2"></span>No matches found for
+                                    <strong>{{ search_q }}</strong>.
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div align="center">
+                        {% if is_paginated %}
+                            <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><a><span>&laquo;</span></a></li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="active"><a><span>{{ i }} <span class="sr-only">(current)</span></span></li></a>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <a><li class="disabled"><span>&raquo;</span></a></li>
+                        {% endif %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Sidebar Content  -->
+                <div class="col-md-4 px-1">
+                    {% include 'blog/sidebar_content.html' %}
+                </div>
+                <!-- / Sidebar Content  -->
+            </div>
+        </div>
+    </section>
+{% endblock content %}

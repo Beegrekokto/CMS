@@ -1,0 +1,63 @@
+
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% load get_client from widgets_client %}
+{% load get_testimonial from widgets_client %}
+{% load get_notice from widgets_notice %}
+{% load get_feature_pages from widgets_page %}
+
+<div class="header-top-area">
+    <!--MAINMENU AREA-->
+    <div class="mainmenu-area" id="mainmenu-area">
+        <div class="mainmenu-area-bg"></div>
+        <nav class="navbar" id="navigation-mar">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand"><img src="{{ company_info.logo.url }}" width="150"
+                                                          class="img-responsive"></a>
+                </div>
+                <div id="main-nav" class="stellarnav">
+                    <ul id="nav" class="nav navbar-nav">
+                        {% recursetree pages_menu %}
+                        <li>
+                            <a href="{{ node.url }}" class="" id="{{ node.slug }}">
+                                {{ node.menu }}
+                            </a>
+                            {% if not node.is_leaf_node %}
+                            <ul>
+                                {{ children }}
+                            </ul>
+                            {% endif %}
+
+                            {%   if node.title ==  "Services" %}
+                             {% if blog %}
+                                <li>
+                                    <a href="{% url 'blog:index' %}">
+                                        {{ blog.name|slice:"30" }}{% if blog.name|length > 30 %}...{% endif %}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                        {%   endif %}
+
+                        </li>
+                        {% endrecursetree %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--END MAINMENU AREA END-->
+</div>
+
+<!--<script>-->
+    <!--$(function(){-->
+        <!--$(document).scroll(function(){-->
+            <!--var $nav = $(".navbar");-->
+            <!--var $ul_nav = $(".nav");-->
+            <!--$nav.toggleClass('scrolled', $(this).scrollTop() > $(nav).height());-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->

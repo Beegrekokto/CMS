@@ -1,0 +1,43 @@
+{% extends 'blog/base_blog.html' %}
+
+{% load staticfiles %}
+{% load get_posts_by_category from blog_tags %}
+
+{% block content %}
+{% include 'blog/blog_header.html' %}
+    <div class="container my-1">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card my-3">
+                    <div class="card-header">
+                        <strong>{{ month|date:"F" }} {{ month|date:"Y" }} | Total in this page
+                            : {{ object_list|length }}</strong>
+                    </div>
+                    <div class="list-group">
+                        {% for posts in object_list %}
+                        <span class="border-bottom-1">
+                            <a href="{% url 'blog:post_detail' posts.slug %}" class="list-group-item justify-content-between border-0 ">
+                                {{ posts.title }}
+                            </a>
+                        </span>
+                        {% empty %}
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="alert alert-info m-0">
+                                    <span class="icon-circle-info mr-2"></span>No Data Found!
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% ajax_paginator %}
+        </div>
+        <!-- Sidebar Content -->
+        <div class="col-md-4 px-1">
+            {% include 'blog/sidebar_content.html' %}
+        </div>
+        <!-- / Sidebar Content -->
+    </div>
+</div>
+{% endblock %}

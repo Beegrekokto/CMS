@@ -1,0 +1,41 @@
+.alert-box {
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        position:relative;
+    }
+    .success {
+        color:green;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+        display: block;
+        margin-bottom: 0px;
+    }
+    .error {
+        color:rgb(119, 31, 9);
+        background-color: #ec6e58;
+        border-color: #d6e9c6;
+        display: block;
+        margin-bottom: 0px;
+    }
+    .btn-close {
+        background: yellow;
+    }
+    .box {
+        right:0;
+        top: 0;
+        position: absolute;
+        background: red;
+    }
+    .-categ-img>img {
+        height:200px;
+        width:100%;
+    }
+
+    .side-box{
+        margin-left:20px;
+        margin-top:20px;
+        margin-bottom:50px;
+        background-color: white;
+
+    }
